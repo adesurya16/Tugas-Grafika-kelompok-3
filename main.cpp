@@ -68,18 +68,18 @@ void drawWhitePoint(int x1, int y1) {
 void drawRedPoint(int x1,int y1){
     redPixelMatrix[x1][y1] = 255;
     greenPixelMatrix[x1][y1] = 0;
-    bluePixelMatrix[x1][y1] = 0;   
+    bluePixelMatrix[x1][y1] = 0;
 }
 
 void drawBlackPoint(int x1,int y1){
     redPixelMatrix[x1][y1] = 0;
     greenPixelMatrix[x1][y1] = 0;
-    bluePixelMatrix[x1][y1] = 0;   
+    bluePixelMatrix[x1][y1] = 0;
 }
 
 void floodFill(int x,int y,int redBatas,int greenBatas,int blueBatas,int redColor,int greenColor,int blueColor){
     if((x>=0 && x<WIDTH) && (y>=0 && y<HEIGHT)){
-        if(!((redPixelMatrix[x][y]==redBatas && greenPixelMatrix[x][y]==greenBatas && bluePixelMatrix[x][y]==blueBatas) || 
+        if(!((redPixelMatrix[x][y]==redBatas && greenPixelMatrix[x][y]==greenBatas && bluePixelMatrix[x][y]==blueBatas) ||
             (redPixelMatrix[x][y]==redColor && greenPixelMatrix[x][y]==greenColor && bluePixelMatrix[x][y]==blueColor))){
             redPixelMatrix[x][y] = redColor;
             greenPixelMatrix[x][y] = greenColor;
@@ -101,7 +101,7 @@ void drawSemiCircle(int x0, int y0, int radius)
     while (x >= y)
     {
         drawWhitePoint(x0 - x, y0 + y);
-        drawWhitePoint(x0 - y, y0 + x); 
+        drawWhitePoint(x0 - y, y0 + x);
         drawWhitePoint(x0 - y, y0 - x);
         drawWhitePoint(x0 - x, y0 - y);
 
@@ -117,7 +117,7 @@ void drawSemiCircle(int x0, int y0, int radius)
         }
     }
 
-    //warnain 
+    //warnain
     floodFill(x0-5,y0,255,255,255,255,255,0);
 }
 
@@ -130,11 +130,11 @@ void drawCircle(int x0, int y0, int radius)
     while (x >= y)
     {
         drawWhitePoint(x0 - x, y0 + y);
-        drawWhitePoint(x0 - y, y0 + x); 
+        drawWhitePoint(x0 - y, y0 + x);
         drawWhitePoint(x0 - y, y0 - x);
         drawWhitePoint(x0 - x, y0 - y);
         drawWhitePoint(x0 + x, y0 + y);
-        drawWhitePoint(x0 + y, y0 + x); 
+        drawWhitePoint(x0 + y, y0 + x);
         drawWhitePoint(x0 + y, y0 - x);
         drawWhitePoint(x0 + x, y0 - y);
 
@@ -176,11 +176,11 @@ bool drawWhiteLine(int x1, int y1, int x2, int y2) {
                 error -= deltaX;
                 y += iy;
             }
- 
+
             error += deltaY;
             x += ix;
- 
-            
+
+
             if (redPixelMatrix[x][y] == 255 && greenPixelMatrix[x][y] == 255 && bluePixelMatrix[x][y] == 255) {
                 ret = true;
             }
@@ -196,11 +196,11 @@ bool drawWhiteLine(int x1, int y1, int x2, int y2) {
                 error -= deltaY;
                 x += ix;
             }
- 
+
             error += deltaX;
             y += iy;
- 
-            
+
+
             if (redPixelMatrix[x][y] == 255 && greenPixelMatrix[x][y] == 255 && bluePixelMatrix[x][y] == 255) {
                 ret = true;
             }
@@ -234,10 +234,10 @@ void drawBlackLine(int x1, int y1, int x2, int y2) {
                 error -= deltaX;
                 y += iy;
             }
- 
+
             error += deltaY;
             x += ix;
- 
+
             drawBlackPoint(x, y);
         }
     } else {
@@ -250,10 +250,10 @@ void drawBlackLine(int x1, int y1, int x2, int y2) {
                 error -= deltaY;
                 x += ix;
             }
- 
+
             error += deltaX;
             y += iy;
- 
+
             drawBlackPoint(x, y);
         }
     }
@@ -283,10 +283,10 @@ void drawRedLine(int x1, int y1, int x2, int y2) {
                 error -= deltaX;
                 y += iy;
             }
- 
+
             error += deltaY;
             x += ix;
- 
+
             drawRedPoint(x, y);
         }
     } else {
@@ -299,10 +299,10 @@ void drawRedLine(int x1, int y1, int x2, int y2) {
                 error -= deltaY;
                 x += ix;
             }
- 
+
             error += deltaX;
             y += iy;
- 
+
             drawRedPoint(x, y);
         }
     }
@@ -327,12 +327,12 @@ int detectKeyStroke() {
 
     int NByte;
     ioctl(STDIN, FIONREAD, &NByte);  // STDIN = 0
-    
+
     return NByte;
 }
 
 void drawShooter(int xp, int yp, char mode) {
-    //gambar tembakan dengan titik pusat lingkaran tembakan 
+    //gambar tembakan dengan titik pusat lingkaran tembakan
     //(yp,xp)
     switch (mode) {
         case'd':
@@ -343,11 +343,11 @@ void drawShooter(int xp, int yp, char mode) {
             floodFill(yp, xp, 255, 255, 255, 255, 0, 0);
             drawWhiteLine(yp,xp+25,yp-25,xp+50);
             drawWhiteLine(yp-25,xp,yp-50,xp+25);
-            drawWhiteLine(yp-25,xp+50,yp-50,xp+25);            
+            drawWhiteLine(yp-25,xp+50,yp-50,xp+25);
             floodFill(yp-30, xp+10, 255, 255, 255, 0, 0, 255);
             break;
         }
-            
+
         case 's':
         case 'S': {
             posX = xp;
@@ -360,7 +360,7 @@ void drawShooter(int xp, int yp, char mode) {
             floodFill(yp-30, xp+10, 255, 255, 255, 0, 0, 255);
             break;
         }
-                    
+
 
         case 'a':
         case 'A': {
@@ -373,7 +373,7 @@ void drawShooter(int xp, int yp, char mode) {
             drawWhiteLine(yp-25,xp-50,yp-50,xp-25);
             floodFill(yp-25, xp-40, 255, 255, 255, 0, 0, 255);
             break;
-        } 
+        }
         default: {}
     }
 }
@@ -385,7 +385,7 @@ void DrawToScreen(){
     for (y = vinfo.yres/2 - WIDTH/2; y < WIDTH + vinfo.yres/2 - WIDTH/2; y++)
         for (x = vinfo.xres/2 - HEIGHT/2; x < HEIGHT + vinfo.xres/2 - HEIGHT/2; x++) {
             location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) + (y+vinfo.yoffset) * finfo.line_length;
-            if (vinfo.bits_per_pixel == 32) { 
+            if (vinfo.bits_per_pixel == 32) {
                 //4byte
                     *(fbp + location) = bluePixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];        // Some blue
                     *(fbp + location + 1) = greenPixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];     // A little green
@@ -424,8 +424,8 @@ void drawExplosion(int x,int y){
     drawRedLine(pointx6,pointy6,pointx7,pointy7);
     drawRedLine(pointx7,pointy7,pointx8,pointy8);
     drawRedLine(pointx8,pointy8,pointx1,pointy1);
-    
-    //warnain 
+
+    //warnain
     floodFill(x,y,255,0,0,255,255,0);
 }
 
@@ -452,8 +452,8 @@ void drawExplosion2(int x,int y){
     drawRedLine(pointx6,pointy6,pointx7,pointy7);
     drawRedLine(pointx7,pointy7,pointx8,pointy8);
     drawRedLine(pointx8,pointy8,pointx1,pointy1);
-    
-    //warnain 
+
+    //warnain
     floodFill(x,y,255,0,0,255,0,0);
 }
 
@@ -464,8 +464,8 @@ void drawUFO(int x1, int y1) {
     drawWhiteLine(x1+20, y1-70, x1+20, y1+20);
 
     floodFill(x1+5, y1, 255, 255, 255, 0, 255, 0);
-    
-    drawSemiCircle(x1, y1-25, 25);    
+
+    drawSemiCircle(x1, y1-25, 25);
 }
 
 void drawStars() {
@@ -483,6 +483,35 @@ void drawStars() {
     drawExplosion(300, 1000);
     drawExplosion(500, 1000);
     drawExplosion(400, 1100);
+}
+
+void moveBounce(double* x, double* y, double* vx, double* vy, int yground) {
+
+    double a = 10;
+
+    double x2 = *x + *vx;
+    double vx2 = *vx;
+
+    double y2 = *y + *vy + a/2;
+    double vy2 = *vy + a;
+
+    if(y2 > yground) {
+        double t0 = (-(*vy) + sqrt((*vy)*(*vy)-2*a*(*y - yground)))/a;
+        double v0 = -(*vy + a*t0);
+
+        if(a*(v0/a)*(v0/a)/2 + v0*(-v0/a) + yground > yground-1) {
+            y2 = yground;
+            vy2 = 0;
+        } else {
+            y2 = (a*(1-t0)*(1-t0)/2 + v0*(1-t0) + yground);
+            vy2 = (v0 + a*(1-t0)) * 0.8;
+        }
+    }
+
+    *x = x2;
+    *y = y2;
+    *vx= vx2;
+    *vy = vy2;
 }
 
 void drawFrame() {
@@ -535,11 +564,11 @@ void drawKeyShooter(){
                         addBullet(posY,posX,0,600,20);
                     else if (lastCorrectState == 'd')
                         addBullet(posY,posX,0,1200,20);
-                
+
             }
         }
     }
-        
+
 }
 
 void drawBullets() {
@@ -553,88 +582,88 @@ void drawBullets() {
             bullets[i].xEnd = bullets[i].xStart + (bullets[i].x2 - bullets[i].x1) * (bullets[i].iteration - 1) / bullets[i].partisi;
             bullets[i].yEnd = (int) floor(bullets[i].m * bullets[i].xEnd + bullets[i].c + 0.5);
             bullets[i].iteration--;
-        }   
+        }
     }
 }
 
 int main() {
-    clearMatrix();    
-    
-    int fbfd = 0;
+    clearMatrix();
+
+    //int fbfd = 0;
     long int screensize = 0;
     exploded = false;
-    
-    fbfd = open("/dev/fb0", O_RDWR);
-    if (fbfd == -1) {
-        perror("Error: cannot open framebuffer device");
-        exit(1);
-    }
+
+    //fbfd = open("/dev/fb0", O_RDWR);
+    //if (fbfd == -1) {
+    //    perror("Error: cannot open framebuffer device");
+    //    exit(1);
+    //}
 
     // Get fixed screen information
-    if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo) == -1) {
-        perror("Error reading fixed information");
-        exit(2);
-    }
+    //if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo) == -1) {
+    //    perror("Error reading fixed information");
+    //    exit(2);
+    //}
     // Get variable screen information
-    if (ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo) == -1) {
-        perror("Error reading variable information");
-        exit(3);
-    }
+    //if (ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo) == -1) {
+    //    perror("Error reading variable information");
+    //    exit(3);
+    //}
 
     // mendapat screensize layar monitor
-    screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
+    //screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
 
     // Map the device to memory
-    fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, (off_t)0);
+    //fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, (off_t)0);
 
     //display merge center
     // Menulis ke layar tengah file
     //Gambar trapesium
-    thread thread1(&drawKeyShooter);
-    int xp = 600;
-    int yp = 574;
-    char KeyPressed;
+    //thread thread1(&drawKeyShooter);
+    //int xp = 600;
+    //int yp = 574;
+    //char KeyPressed;
 
-    int xawal = 100, yawal = 1180;
-    bool left = true;
-    
-    do {
-        clearMatrix();
-        drawFrame();
-        
-        drawShooter(xp,yp,lastCorrectState);
-        //drawStars();
+    //int xawal = 100, yawal = 1180;
+    //bool left = true;
+
+    //do {
+    //    clearMatrix();
+    //    drawFrame();
+
+    //    drawShooter(xp,yp,lastCorrectState);
+    //    //drawStars();
 
         // draw UFO
-        drawUFO(xawal, yawal);
-        if(yawal-70<=0) {
-            left = false;
-        } else if(yawal+20>=1200) {
-            left = true;
-        }
-        if (left) {
-            yawal -= 10;
-        } else {
-            yawal += 10;     
-        }
-        
-        // draw bullet
-        drawBullets(); 
+    //    drawUFO(xawal, yawal);
+    //    if(yawal-70<=0) {
+    //        left = false;
+    //    } else if(yawal+20>=1200) {
+    //        left = true;
+    //    }
+    //    if (left) {
+    //        yawal -= 10;
+    // } else {
+    //        yawal += 10;
+    //    }
 
-        DrawToScreen(); 
-        usleep(50000);
-    } while (KeyPressed!='C' && !exploded);
-    thread1.detach();
-    clearMatrix();
-    drawFrame();
-    drawShooter(xp,yp,lastCorrectState);
+        // draw bullet
+        //drawBullets();
+
+        //DrawToScreen();
+        //usleep(50000);
+    //} while (KeyPressed!='C' && !exploded);
+    //thread1.detach();
+    //clearMatrix();
+    //drawFrame();
+    //drawShooter(xp,yp,lastCorrectState);
     //drawStars();
-    drawExplosion2(xawal,yawal);
-    DrawToScreen();
-    
-    
-    munmap(fbp, screensize);
-    close(fbfd);
-    
+    //drawExplosion2(xawal,yawal);
+    //DrawToScreen();
+
+
+    //munmap(fbp, screensize);
+    //close(fbfd);
+
     return 0;
 }
