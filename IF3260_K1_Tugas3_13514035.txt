@@ -1,0 +1,35 @@
+Kelompok 3
+
+Anggota :
+
+1. Alson Cahyadi - 13514035
+
+2. Cendhika Imantoro - 13514037
+
+3. Varian Caesar - 13514041
+
+4. Vitra Chandra - 13514043
+
+5. Elvina Riama Kusumawardhani S - 13514045
+
+6. Bervianto Leo P - 13514047
+
+7. Ade Surya Ramadhani - 13514049
+
+
+
+Pembagian Tugas :
+
+1. Alson Cahyadi - 13514035 : Membuat algoritma lingkaran.
+
+2. Cendhika Imantoro - 13514037 : Membuat algoritma garis.
+
+3. Varian Caesar - 13514041 : Membuat coalision (tabrakan) terjadi dan meledak.
+
+4. Vitra Chandra - 13514043 : Membuat gambar ledakan, membuat keylistener.
+
+5. Elvina Riama Kusumawardhani S - 13514045 : Membuat gambar ufo, membuat keylistener.
+
+6. Bervianto Leo P - 13514047 : Membuat Tembakan dengan posisi berbeda-beda dan menembak.
+
+7. Ade Surya Ramadhani - 13514049 : Membuat Algoritma Flood Fill.
