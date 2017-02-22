@@ -182,27 +182,30 @@ bool drawWhiteLine(int x1, int y1, int x2, int y2) {
 }
 
 //CLipper Constants
+bool isClipping = false;
 int xClipper = 100;
 int yClipper = 600;
 int pClipper = 70;
 int lClipper = 300;
 
 void clip(int xClipper, int yClipper, int pClipper, int lClipper) {
-	for (int i = 0; i < WIDTH; ++i)
-	{
-		for (int j = 0; j < HEIGHT; ++j)
+	if (isClipping) {
+		for (int i = 0; i < WIDTH; ++i)
 		{
-			if ((abs(xClipper - i) > pClipper) || (abs(yClipper - j) > lClipper)) {
-				redPixelMatrix[i][j] = 0;
-				greenPixelMatrix[i][j] = 0;
-				bluePixelMatrix[i][j] = 0;
+			for (int j = 0; j < HEIGHT; ++j)
+			{
+				if ((abs(xClipper - i) > pClipper) || (abs(yClipper - j) > lClipper)) {
+					redPixelMatrix[i][j] = 0;
+					greenPixelMatrix[i][j] = 0;
+					bluePixelMatrix[i][j] = 0;
+				}
 			}
 		}
+		drawWhiteLine(xClipper+pClipper, yClipper+lClipper, xClipper-pClipper, yClipper+lClipper);
+		drawWhiteLine(xClipper+pClipper, yClipper+lClipper, xClipper+pClipper, yClipper-lClipper);
+		drawWhiteLine(xClipper+pClipper, yClipper-lClipper, xClipper-pClipper, yClipper-lClipper);
+		drawWhiteLine(xClipper-pClipper, yClipper+lClipper, xClipper-pClipper, yClipper-lClipper);
 	}
-	drawWhiteLine(xClipper+pClipper, yClipper+lClipper, xClipper-pClipper, yClipper+lClipper);
-	drawWhiteLine(xClipper+pClipper, yClipper+lClipper, xClipper+pClipper, yClipper-lClipper);
-	drawWhiteLine(xClipper+pClipper, yClipper-lClipper, xClipper-pClipper, yClipper-lClipper);
-	drawWhiteLine(xClipper-pClipper, yClipper+lClipper, xClipper-pClipper, yClipper-lClipper);
 }
 
 void drawSemiCircle(int x0, int y0, int radius)
@@ -560,7 +563,13 @@ void DrawToScreen(){
     				else if (lastCorrectState == 'd')
     					addBullet(posY,posX,0,1200,20);
 
-    			} else if (KeyPressed=='j' || KeyPressed=='l' || KeyPressed=='i' || KeyPressed=='k') { //Kiri Kanan Atas Bawah Clipper
+    			} else if (KeyPressed=='j' || KeyPressed=='l' || KeyPressed=='i' || KeyPressed=='k' || KeyPressed=='z') { //Listener Clipper
+    				//IsClip
+    				if (KeyPressed == 'z') {
+    					isClipping = !isClipping;
+    				}
+
+    				//Clipper gerak kiri kanan atas bawah
     				if (KeyPressed == 'j') {
     					yClipper -= 20;
     				}
