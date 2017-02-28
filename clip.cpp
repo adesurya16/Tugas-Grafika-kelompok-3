@@ -370,42 +370,54 @@ bool drawWhiteLineZoom(int x1, int y1, int x2, int y2) {
 }
 //List of Object
 Object *listObject;
-int nObject = 17;
+int nObject = 2; /////////////////////////////////////////////////////////////////////JANGAN LUPA UPDATE
 void makeWorld() {
-    Point *explosion = (Point*)malloc(8*sizeof(Point));
-    explosion[0].x = -20; explosion[0].y = 20;
-    explosion[1].x = 0;   explosion[1].y = 10;
-    explosion[2].x = 20;  explosion[2].y = 20;
-    explosion[3].x = 10;  explosion[3].y = 0;
-    explosion[4].x = 20;  explosion[4].y = -20;
-    explosion[5].x = 0;   explosion[5].y = -10;
-    explosion[6].x = -20; explosion[6].y = -20;
-    explosion[7].x = -10; explosion[7].y = 0;
 
-    listObject = (Object*)malloc(nObject * sizeof(Object));
-    for(int i = 0; i < nObject; i++) {
-        listObject[i] = Object();
-        listObject[i].buildPolygon(explosion, 8);
-    }
-    listObject[0] = listObject[0].translate(100, 100);
-    listObject[1] = listObject[1].translate(100, 200);
-    listObject[2] = listObject[2].translate(100, 300);
-    listObject[3] = listObject[3].translate(100, 400);
-    listObject[4] = listObject[4].translate(100, 500);
-    listObject[5] = listObject[5].translate(200, 100);
-    listObject[6] = listObject[6].translate(200, 200);
-    listObject[7] = listObject[7].translate(200, 300);
-    listObject[8] = listObject[8].translate(200, 400);
-    listObject[9] = listObject[9].translate(200, 500);
-    listObject[10] = listObject[10].translate(400, 100);
-    listObject[11] = listObject[11].translate(300, 200);
-    listObject[12] = listObject[12].translate(500, 200);
-    listObject[13] = listObject[13].translate(400, 300);
-    listObject[14] = listObject[14].translate(300, 400);
-    listObject[15] = listObject[15].translate(500, 400);
-    listObject[16] = listObject[16].translate(400, 500);
+    int pointSize;
+    Point *listPoint;
+    listObject = (Object*) malloc(nObject*sizeof(Object));
+    int idxObject = 0;
 
-    free(explosion);
+    //Diulang-ulang
+    //////////////////////////////////////////////////////////////////////////////////////////
+    pointSize = 8;
+    listPoint =  (Point*)malloc(pointSize*sizeof(Point));
+    int xKubus[8], yKubus[8];
+	xKubus[0] = 156; yKubus[0] = 414;
+	xKubus[1] = 159; yKubus[1] = 406;
+	xKubus[2] = 166; yKubus[2] = 400;
+	xKubus[3] = 167; yKubus[3] = 382;
+	xKubus[4] = 194; yKubus[4] = 382;
+	xKubus[5] = 195; yKubus[5] = 298;
+	xKubus[6] = 201; yKubus[6] = 407;
+	xKubus[7] = 204; yKubus[7] = 414;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xKubus[i];
+        listPoint[i].y = yKubus[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+	//////////////////////////////////////////////////////////////////////////////////////////
+    pointSize = 4;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xKotakKiri[4], yKotakKiri[4];
+	xKotakKiri[0] = 75; yKotakKiri[0] = 415;
+	xKotakKiri[1] = 71; yKotakKiri[1] = 406;
+	xKotakKiri[2] = 100; yKotakKiri[2] = 396;
+	xKotakKiri[3] = 103; yKotakKiri[3] = 405;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xKotakKiri[i];
+        listPoint[i].y = yKotakKiri[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+
 }
 
 void drawAllObject() {
