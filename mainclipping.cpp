@@ -37,6 +37,17 @@ int posY;
 int lastCorrectState = 's';
 bool exploded = false;
 
+//CLipper Constants
+bool isClipping = false;
+int xClipper = 150;
+int yClipper = 150;
+int pClipper = 100;
+int lClipper = 100;
+
+//zoom constant
+int zoomConst = 3;
+
+
 void clearMatrix() {
 	for (int i = 0; i < WIDTH; ++i)
 	{
@@ -191,10 +202,10 @@ bool isCollision(int x1garis, int y1garis,int x2garis,int y2garis,int x1clip,int
 				ykecil = y2clip;
 				ybesar = y1clip;
 			}
-			int delta = (x1clip - x1garis1)*(y2garis-y1garis);
+			int delta = (x1clip - x1garis)*(y2garis-y1garis);
 			if(delta>=(ykecil-y1garis)*(x2garis-x1garis) && delta<(ybesar-y1garis)*(x2garis-x1garis)){
 				return true;
-			}else return false
+			}else return false;
 		}else{ //y sama
 			int xkecil,xbesar;
 			if(y1clip < y2clip){
@@ -204,7 +215,7 @@ bool isCollision(int x1garis, int y1garis,int x2garis,int y2garis,int x1clip,int
 				xkecil = x2clip;
 				xbesar = x1clip;
 			}
-			int delta = (y1clip - y1garis1)*(x2garis-x1garis);
+			int delta = (y1clip - y1garis)*(x2garis-x1garis);
 			if(delta>=(xkecil-x1garis)*(y2garis-y1garis) && delta<(xkecil-x1garis)*(y2garis-y1garis)){
 					return true;
 			}else return false;
@@ -214,13 +225,13 @@ bool isCollision(int x1garis, int y1garis,int x2garis,int y2garis,int x1clip,int
 void getTitikPotong(int x1garis, int y1garis,int x2garis,int y2garis,int x1clip,int y1clip,int x2clip,int y2clip,
 	int &xpot, int &ypot){
 		if(x1clip==x2clip){
-			int delta = (x1clip - x1garis1)*(y2garis-y1garis);
+			int delta = (x1clip - x1garis)*(y2garis-y1garis);
 			xpot = x1clip;
-			ypot = round(delta / (x2garis-x1garis)) + ygaris1;
+			ypot = round(delta / (x2garis-x1garis)) + y1garis;
 		}else{ //y sama
-			int delta = (y1clip - y1garis1)*(x2garis-x1garis);
+			int delta = (y1clip - y1garis)*(x2garis-x1garis);
 			ypot = y1clip;
-			xpot = round(delta / (y2garis-y1garis)) + xgaris1;
+			xpot = round(delta / (y2garis-y1garis)) + x1garis;
 		}
 }
 
@@ -297,11 +308,11 @@ void drawWhiteLineClipping(int x1garis, int y1garis, int x2garis, int y2garis){
 
 		}else
 		if(isCollision(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis)){
-			  getTitikPotong(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+			  getTitikPotong(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis,x,y);
 
 		}else
 		if(isCollision(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis)){
-				getTitikPotong(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+				getTitikPotong(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis,x,y);
 		}
 
 		if(isTitikDalam(x1garis,y1garis)){
@@ -372,15 +383,7 @@ bool drawWhiteLine2(int x1, int y1, int x2, int y2) {
 	return ret;
 }
 
-//CLipper Constants
-bool isClipping = false;
-int xClipper = 150;
-int yClipper = 150;
-int pClipper = 100;
-int lClipper = 100;
 
-//zoom constant
-int zoomConst = 3;
 
 void clip(int xClipper, int yClipper, int pClipper, int lClipper) {
 	if (isClipping) {
@@ -603,43 +606,6 @@ void DrawMapAndMiniMapToScreen(){
     	//floodFill(x,y,255,0,0,255,255,0);
 	}
 
-	void drawExplosion2(int x,int y){
-    //x = 70
-    // bentuk bintang ada 8 garis sesuai dengan parameter titik pusat (x,y)
-		int pointx1 = x-20, pointy1 =y+20;
-		int pointx3 = x+30, pointy3 =y+30;
-		int pointx5 = x+20, pointy5 =y-20;
-		int pointx7 = x-30, pointy7 =y-30;
-
-		int pointx2 = x, pointy2 = y+15;
-		int pointx4 = x+10, pointy4 = y;
-		int pointx6 = x, pointy6 = y-10;
-		int pointx8 = x-15, pointy8 = y;
-
-    //gambar ledakan
-		drawRedLine(pointx1,pointy1,pointx2,pointy2);
-		drawRedLine(pointx2,pointy2,pointx3,pointy3);
-		drawRedLine(pointx3,pointy3,pointx4,pointy4);
-		drawRedLine(pointx4,pointy4,pointx5,pointy5);
-		drawRedLine(pointx5,pointy5,pointx6,pointy6);
-		drawRedLine(pointx6,pointy6,pointx7,pointy7);
-		drawRedLine(pointx7,pointy7,pointx8,pointy8);
-		drawRedLine(pointx8,pointy8,pointx1,pointy1);
-
-    //warnain
-    	//floodFill(x,y,255,0,0,255,0,0);
-	}
-
-	void drawUFO(int x1, int y1) {
-		drawWhiteLine(x1, y1, x1+20, y1+20);
-		drawWhiteLine(x1, y1, x1, y1-50);
-		drawWhiteLine(x1, y1-50, x1+20, y1-70);
-		drawWhiteLine(x1+20, y1-70, x1+20, y1+20);
-
-    	//floodFill(x1+5, y1, 255, 255, 255, 0, 255, 0);
-
-		drawSemiCircle(x1, y1-25, 25);
-	}
 
 	void drawStars() {
 		drawExplosion(100,100);
@@ -673,15 +639,16 @@ void DrawMapAndMiniMapToScreen(){
 		drawWhiteLine2(WIDTH-1, 1, 1, 1);
 	}
 
-	
-	void drawKeyClipping(){
-    	while(true){
-    		if(!detectKeyStroke()) {
-					char KeyPressed = getchar();
-    			if (KeyPressed=='j' || KeyPressed=='l' || KeyPressed=='i' || KeyPressed=='k' || KeyPressed=='z') { //Listener Clipper
-    				//IsClip
 
-    				//Clipper gerak kiri kanan atas bawah
+
+void drawKeyClipping(){
+	while(true){
+		if(!detectKeyStroke()) {
+				char KeyPressed = getchar();
+				if (KeyPressed=='j' || KeyPressed=='l' || KeyPressed=='i' || KeyPressed=='k' || KeyPressed=='z') { //Listener Clipper
+					//IsClip
+
+					//Clipper gerak kiri kanan atas bawah
 				if (KeyPressed == 'j') {
 					yClipper -= 20;
 				}
@@ -728,14 +695,14 @@ void DrawMapAndMiniMapToScreen(){
 				lClipper = futurel;
 
 				printf(">> zoomConst: %d\n", zoomConst);
-    				//Penanganan x diluar frame buffer
+					//Penanganan x diluar frame buffer
 				if (xClipper + pClipper > WIDTH) {
 					xClipper = WIDTH - pClipper - 1;
 				}
 				if (xClipper - pClipper < 0) {
 					xClipper = pClipper + 1;
 				}
-    				//Penanganan y diluar frame buffer
+					//Penanganan y diluar frame buffer
 				if (yClipper + lClipper > HEIGHT) {
 					yClipper = HEIGHT - lClipper - 1;
 				}
@@ -744,50 +711,8 @@ void DrawMapAndMiniMapToScreen(){
 				}
 			}
 		}
-
 	}
-
-	void drawBullets() {
-    //persamaan garis
-		for (int i = bullets.size()-1; i >=0; --i)
-		{
-			if (bullets[i].iteration >0) {
-				if (drawWhiteLine(bullets[i].xStart,bullets[i].yStart,bullets[i].xEnd,bullets[i].yEnd)) exploded = true;
-				bullets[i].xStart = bullets[i].xEnd;
-				bullets[i].yStart = bullets[i].yEnd;
-				bullets[i].xEnd = bullets[i].xStart + (bullets[i].x2 - bullets[i].x1) * (bullets[i].iteration - 1) / bullets[i].partisi;
-				bullets[i].yEnd = (int) floor(bullets[i].m * bullets[i].xEnd + bullets[i].c + 0.5);
-				bullets[i].iteration--;
-			}
-		}
-	}
-
-	void drawplaneright(int x1,int y1){
-		drawWhiteLine(x1, y1, x1, y1-80);
-		drawWhiteLine(x1,y1-80,x1,y1-100);
-		drawWhiteLine(x1,y1-100,x1-20,y1-80);
-		drawWhiteLine(x1-20,y1-80,x1, y1-80);
-		drawWhiteLine(x1-20,y1-80,x1-20,y1-20);
-		drawWhiteLine(x1-20,y1-20,x1-40,y1);
-		drawWhiteLine(x1-40,y1,x1-20,y1);
-		drawWhiteLine(x1-20,y1,x1-20,y1-20);
-		drawWhiteLine(x1-20,y1,x1,y1);
-
-    //gambar sayap
-		drawWhiteLine(x1-15, y1-60, x1-12, y1-45);
-		drawWhiteLine(x1-5, y1-65, x1-12, y1-45);
-		drawWhiteLine(x1-5, y1-65, x1-15, y1-60);
-
-    //mewarnai pesawat
-    //warnain badan
-    	//floodFill(x1-1,y1-1,255,255,255,255,0,127);
-
-    //warnain ekor
-    	//floodFill(x1-21, y1-1, 255, 255, 255, 208, 163, 237);
-
-    //warnain kepala
-    	//floodFill(x1-1, y1-81, 255, 255, 255, 208, 163, 237);
-	}
+}
 
 
 int zoomR[WIDTH][HEIGHT];
