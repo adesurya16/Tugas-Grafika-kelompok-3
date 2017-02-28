@@ -37,23 +37,6 @@ int posY;
 int lastCorrectState = 's';
 bool exploded = false;
 
-struct bullet
-{
-	int xStart;
-	int yStart;
-	int xEnd;
-	int yEnd;
-	float m;
-	float c;
-	int partisi;
-	int iteration;
-	int x1;
-	int x2;
-	int n;
-};
-
-vector<bullet> bullets;
-
 void clearMatrix() {
 	for (int i = 0; i < WIDTH; ++i)
 	{
@@ -105,8 +88,8 @@ void floodFill(int x,int y,int redBatas,int greenBatas,int blueBatas,int redColo
 		floodFill(x+1,y,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor);
 		floodFill(x,y-1,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor);
 		floodFill(x-1,y,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor);
+		}
 	}
-}
 }
 
 void drawCircle(int x0, int y0, int radius)
@@ -196,6 +179,138 @@ bool drawWhiteLine(int x1, int y1, int x2, int y2) {
 		}
 	}
 	return ret;
+}
+
+bool isCollision(int x1garis, int y1garis,int x2garis,int y2garis,int x1clip,int y1clip,int x2clip,int y2clip){
+		if(x1clip==x2clip){
+			int ykecil,ybesar;
+			if(y1clip < y2clip){
+				ykecil = y1clip;
+				ybesar = y2clip;
+			}else{
+				ykecil = y2clip;
+				ybesar = y1clip;
+			}
+			int delta = (x1clip - x1garis1)*(y2garis-y1garis);
+			if(delta>=(ykecil-y1garis)*(x2garis-x1garis) && delta<(ybesar-y1garis)*(x2garis-x1garis)){
+				return true;
+			}else return false
+		}else{ //y sama
+			int xkecil,xbesar;
+			if(y1clip < y2clip){
+				xkecil = x1clip;
+				xbesar = x2clip;
+			}else{
+				xkecil = x2clip;
+				xbesar = x1clip;
+			}
+			int delta = (y1clip - y1garis1)*(x2garis-x1garis);
+			if(delta>=(xkecil-x1garis)*(y2garis-y1garis) && delta<(xkecil-x1garis)*(y2garis-y1garis)){
+					return true;
+			}else return false;
+		}
+}
+
+void getTitikPotong(int x1garis, int y1garis,int x2garis,int y2garis,int x1clip,int y1clip,int x2clip,int y2clip,
+	int &xpot, int &ypot){
+		if(x1clip==x2clip){
+			int delta = (x1clip - x1garis1)*(y2garis-y1garis);
+			xpot = x1clip;
+			ypot = round(delta / (x2garis-x1garis)) + ygaris1;
+		}else{ //y sama
+			int delta = (y1clip - y1garis1)*(x2garis-x1garis);
+			ypot = y1clip;
+			xpot = round(delta / (y2garis-y1garis)) + xgaris1;
+		}
+}
+
+bool isTitikDalam(int x,int y){
+	int xclip1 = xClipper - pClipper;
+	int yclip1 = yClipper - lClipper;
+	int xclip2 = xClipper - pClipper;
+	int yclip2 = yClipper + lClipper;
+	int xclip3 = xClipper + pClipper;
+	int yclip3 = yClipper + lClipper;
+	int xclip4 = xClipper + pClipper;
+	int yclip4 = yClipper + lClipper;
+	return ((x>=0) && (x<xclip4)) && ((y>=0) && (y<yclip2));
+}
+
+void drawWhiteLineClipping(int x1garis, int y1garis, int x2garis, int y2garis){
+	/* Asumsi Clipping hanya 1 dan sudah diektahui titiknya dimana */
+		int xclip1 = xClipper - pClipper;
+		int yclip1 = yClipper - lClipper;
+		int xclip2 = xClipper - pClipper;
+		int yclip2 = yClipper + lClipper;
+		int xclip3 = xClipper + pClipper;
+		int yclip3 = yClipper + lClipper;
+		int xclip4 = xClipper + pClipper;
+		int yclip4 = yClipper + lClipper;
+
+		if(isTitikDalam(x1garis,y1garis) && isTitikDalam(x2garis,y2garis)){
+			//kalo didalem semua
+			//gambar biasa
+			drawWhiteLine(x1garis,y1garis,x2garis,y2garis);
+		// }else if(isTitikDalam(x1garis,x1garis) || isTitikDalam(x2garis,y2garis)){
+		// //Kasus 2 kalo 2 titik salah satu ada yang didalem
+		// 		//dapetin titik potong
+		//
+		// 		if(isTitikDalam(x1garis,y1garis)){
+		// 				//gambar biasa ke garis x1 y1
+		//
+		// 		}else{
+		// 				//gambar biasa ke garis x2 y2
+		//
+		// 		}
+		// }
+	}else if(!isTitikDalam(x1garis,y1garis) && !isTitikDalam(x2garis,y2garis)){
+		//kalo dia dititik clip gimana perpotongannya?
+		int x[2],y[2];
+		int i = 0;
+		//kalo gak perpotongan biarkan;
+		if(isCollision(xclip1,yclip1,xclip2,yclip2,x1garis,y1garis,x2garis,y2garis) && i<2){
+			getTitikPotong(xclip1,yclip1,xclip2,yclip2,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+			i++;
+		}
+		if(isCollision(xclip3,yclip3,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis) && i<2){
+			getTitikPotong(xclip3,yclip3,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+			i++;
+		}
+		if(isCollision(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis) && i<2){
+			getTitikPotong(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+			i++;
+		}
+		if(isCollision(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis) && i<2){
+			getTitikPotong(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+			i++;
+		}
+		//drawWhiteLine
+		drawWhiteLine(x[1],y[1],x[2],y[2]);
+	}else{
+		int x,y;
+		if(isCollision(xclip1,yclip1,xclip2,yclip2,x1garis,y1garis,x2garis,y2garis)){
+				getTitikPotong(xclip1,yclip1,xclip2,yclip2,x1garis,y1garis,x2garis,y2garis,x,y);
+
+		}else
+		if(isCollision(xclip3,yclip3,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis)){
+				getTitikPotong(xclip3,yclip3,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis,x,y);
+
+		}else
+		if(isCollision(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis)){
+			  getTitikPotong(xclip2,yclip2,xclip3,yclip3,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+
+		}else
+		if(isCollision(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis)){
+				getTitikPotong(xclip1,yclip1,xclip4,yclip4,x1garis,y1garis,x2garis,y2garis,x[i],y[i]);
+		}
+
+		if(isTitikDalam(x1garis,y1garis)){
+			drawWhiteLine(x1garis,y1garis,x,y);
+		}else{
+			drawWhiteLine(x2garis,y2garis,x,y);
+		}
+	}
+	//kasus 4 kalo 2 titik diluar tapi ngelewatin garis clipping abaikan
 }
 
 bool drawWhiteLine2(int x1, int y1, int x2, int y2) {
