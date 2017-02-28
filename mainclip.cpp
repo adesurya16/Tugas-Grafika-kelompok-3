@@ -68,18 +68,18 @@ void drawWhitePoint(int x1, int y1) {
 void drawRedPoint(int x1,int y1){
 	redPixelMatrix[x1][y1] = 255;
 	greenPixelMatrix[x1][y1] = 0;
-	bluePixelMatrix[x1][y1] = 0;   
+	bluePixelMatrix[x1][y1] = 0;
 }
 
 void drawBlackPoint(int x1,int y1){
 	redPixelMatrix[x1][y1] = 0;
 	greenPixelMatrix[x1][y1] = 0;
-	bluePixelMatrix[x1][y1] = 0;   
+	bluePixelMatrix[x1][y1] = 0;
 }
 
 void floodFill(int x,int y,int redBatas,int greenBatas,int blueBatas,int redColor,int greenColor,int blueColor){
 	if((x>=0 && x<WIDTH) && (y>=0 && y<HEIGHT)){
-		if(!((redPixelMatrix[x][y]==redBatas && greenPixelMatrix[x][y]==greenBatas && bluePixelMatrix[x][y]==blueBatas) || 
+		if(!((redPixelMatrix[x][y]==redBatas && greenPixelMatrix[x][y]==greenBatas && bluePixelMatrix[x][y]==blueBatas) ||
 			(redPixelMatrix[x][y]==redColor && greenPixelMatrix[x][y]==greenColor && bluePixelMatrix[x][y]==blueColor))){
 			redPixelMatrix[x][y] = redColor;
 		greenPixelMatrix[x][y] = greenColor;
@@ -101,11 +101,11 @@ void drawCircle(int x0, int y0, int radius)
 	while (x >= y)
 	{
 		drawWhitePoint(x0 - x, y0 + y);
-		drawWhitePoint(x0 - y, y0 + x); 
+		drawWhitePoint(x0 - y, y0 + x);
 		drawWhitePoint(x0 - y, y0 - x);
 		drawWhitePoint(x0 - x, y0 - y);
 		drawWhitePoint(x0 + x, y0 + y);
-		drawWhitePoint(x0 + y, y0 + x); 
+		drawWhitePoint(x0 + y, y0 + x);
 		drawWhitePoint(x0 + y, y0 - x);
 		drawWhitePoint(x0 + x, y0 - y);
 
@@ -218,7 +218,7 @@ void drawSemiCircle(int x0, int y0, int radius)
 	while (x >= y)
 	{
 		drawWhitePoint(x0 - x, y0 + y);
-		drawWhitePoint(x0 - y, y0 + x); 
+		drawWhitePoint(x0 - y, y0 + x);
 		drawWhitePoint(x0 - y, y0 - x);
 		drawWhitePoint(x0 - x, y0 - y);
 
@@ -234,8 +234,8 @@ void drawSemiCircle(int x0, int y0, int radius)
 		}
 	}
 
-    //warnain 
-	floodFill(x0-5,y0,255,255,255,255,255,0);
+    //warnain
+	//floodFill(x0-5,y0,255,255,255,255,255,0);
 }
 
 void drawBlackLine(int x1, int y1, int x2, int y2) {
@@ -354,12 +354,12 @@ int detectKeyStroke() {
 
 	int NByte;
     ioctl(STDIN, FIONREAD, &NByte);  // STDIN = 0
-    
+
     return NByte;
 }
 
 void drawShooter(int xp, int yp, char mode) {
-    //gambar tembakan dengan titik pusat lingkaran tembakan 
+    //gambar tembakan dengan titik pusat lingkaran tembakan
     //(yp,xp)
 	switch (mode) {
 		case'd':
@@ -367,11 +367,11 @@ void drawShooter(int xp, int yp, char mode) {
 			posX = xp+50;
 			posY = yp-50;
 			drawCircle(yp,xp,25);
-			floodFill(yp, xp, 255, 255, 255, 255, 0, 0);
+			//floodFill(yp, xp, 255, 255, 255, 255, 0, 0);
 			drawWhiteLine(yp,xp+25,yp-50,xp+50);
             //drawWhiteLine(yp-25,xp,yp-50,xp+25);
-			drawWhiteLine(yp-25,xp,yp-50,xp+50);            
-			floodFill(yp-15, xp+20, 255, 255, 255, 0, 0, 255);
+			drawWhiteLine(yp-25,xp,yp-50,xp+50);
+			//floodFill(yp-15, xp+20, 255, 255, 255, 0, 0, 255);
 			break;
 		}
 
@@ -380,11 +380,11 @@ void drawShooter(int xp, int yp, char mode) {
 			posX = xp;
 			posY = 500;
 			drawCircle(yp,xp,25);
-			floodFill(yp, xp, 255, 255, 255, 0, 255, 0);
+			//floodFill(yp, xp, 255, 255, 255, 0, 255, 0);
 			drawWhiteLine(yp-15,xp+20,yp-50,xp);
 			drawWhiteLine(yp-50,xp,yp-15,xp-20);
             //drawWhiteLine(yp-50,xp+20,yp-50,xp-20);
-			floodFill(yp-35, xp, 255, 255, 255, 0, 0, 255);
+			//floodFill(yp-35, xp, 255, 255, 255, 0, 0, 255);
 			break;
 		}
 
@@ -394,13 +394,13 @@ void drawShooter(int xp, int yp, char mode) {
 			posX = xp-50;
 			posY = yp-50;
 			drawCircle(yp,xp,25);
-			floodFill(yp, xp, 255, 255, 255, 255, 180, 0);
+			//floodFill(yp, xp, 255, 255, 255, 255, 180, 0);
 			drawWhiteLine(yp,xp-25,yp-50,xp-50);
 			drawWhiteLine(yp-25,xp,yp-50,xp-50);
             //drawWhiteLine(yp-25,xp-50,yp-50,xp-25);
-			floodFill(yp-25, xp-25, 255, 255, 255, 0, 0, 255);
+			//floodFill(yp-25, xp-25, 255, 255, 255, 0, 0, 255);
 			break;
-		} 
+		}
 		default: {}
 	}
 }
@@ -412,7 +412,7 @@ void DrawToScreen(){
 	for (y = vinfo.yres/2 - WIDTH/2; y < WIDTH + vinfo.yres/2 - WIDTH/2; y++)
 		for (x = vinfo.xres/2 - HEIGHT/2; x < HEIGHT + vinfo.xres/2 - HEIGHT/2; x++) {
 			location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) + (y+vinfo.yoffset) * finfo.line_length;
-			if (vinfo.bits_per_pixel == 32) { 
+			if (vinfo.bits_per_pixel == 32) {
                 //4byte
                     *(fbp + location) = bluePixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];        // Some blue
                     *(fbp + location + 1) = greenPixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];     // A little green
@@ -452,8 +452,8 @@ void DrawToScreen(){
     	drawRedLine(pointx7,pointy7,pointx8,pointy8);
     	drawRedLine(pointx8,pointy8,pointx1,pointy1);
 
-    //warnain 
-    	floodFill(x,y,255,0,0,255,255,0);
+    //warnain
+    	//floodFill(x,y,255,0,0,255,255,0);
     }
 
 
@@ -480,8 +480,8 @@ void DrawToScreen(){
     	drawRedLine(pointx7,pointy7,pointx8,pointy8);
     	drawRedLine(pointx8,pointy8,pointx1,pointy1);
 
-    //warnain 
-    	floodFill(x,y,255,0,0,255,0,0);
+    //warnain
+    	//floodFill(x,y,255,0,0,255,0,0);
     }
 
     void drawUFO(int x1, int y1) {
@@ -490,9 +490,9 @@ void DrawToScreen(){
     	drawWhiteLine(x1, y1-50, x1+20, y1-70);
     	drawWhiteLine(x1+20, y1-70, x1+20, y1+20);
 
-    	floodFill(x1+5, y1, 255, 255, 255, 0, 255, 0);
+    	//floodFill(x1+5, y1, 255, 255, 255, 0, 255, 0);
 
-    	drawSemiCircle(x1, y1-25, 25);    
+    	drawSemiCircle(x1, y1-25, 25);
     }
 
     void drawStars() {
@@ -614,7 +614,7 @@ void DrawToScreen(){
     			bullets[i].xEnd = bullets[i].xStart + (bullets[i].x2 - bullets[i].x1) * (bullets[i].iteration - 1) / bullets[i].partisi;
     			bullets[i].yEnd = (int) floor(bullets[i].m * bullets[i].xEnd + bullets[i].c + 0.5);
     			bullets[i].iteration--;
-    		}   
+    		}
     	}
     }
 
@@ -624,7 +624,7 @@ void DrawToScreen(){
     	drawWhiteLine(x1,y1-100,x1-20,y1-80);
     	drawWhiteLine(x1-20,y1-80,x1, y1-80);
     	drawWhiteLine(x1-20,y1-80,x1-20,y1-20);
-    	drawWhiteLine(x1-20,y1-20,x1-40,y1);    
+    	drawWhiteLine(x1-20,y1-20,x1-40,y1);
     	drawWhiteLine(x1-40,y1,x1-20,y1);
     	drawWhiteLine(x1-20,y1,x1-20,y1-20);
     	drawWhiteLine(x1-20,y1,x1,y1);
@@ -636,13 +636,13 @@ void DrawToScreen(){
 
     //mewarnai pesawat
     //warnain badan
-    	floodFill(x1-1,y1-1,255,255,255,255,0,127);
+    	//floodFill(x1-1,y1-1,255,255,255,255,0,127);
 
     //warnain ekor
-    	floodFill(x1-21, y1-1, 255, 255, 255, 208, 163, 237);
+    	//floodFill(x1-21, y1-1, 255, 255, 255, 208, 163, 237);
 
     //warnain kepala
-    	floodFill(x1-1, y1-81, 255, 255, 255, 208, 163, 237);
+    	//floodFill(x1-1, y1-81, 255, 255, 255, 208, 163, 237);
     }
 
     void drawplaneleft(int x1,int y1){
@@ -652,7 +652,7 @@ void DrawToScreen(){
     	drawWhiteLine(x1,HEIGHT - (y1-100),x1-20,HEIGHT - (y1-80));
     	drawWhiteLine(x1-20,HEIGHT -(y1-80),x1,HEIGHT - (y1-80));
     	drawWhiteLine(x1-20,HEIGHT -(y1-80),x1-20,HEIGHT -(y1-20));
-    	drawWhiteLine(x1-20,HEIGHT -(y1-20),x1-40,HEIGHT - y1);    
+    	drawWhiteLine(x1-20,HEIGHT -(y1-20),x1-40,HEIGHT - y1);
     	drawWhiteLine(x1-40,HEIGHT - y1,x1-20,HEIGHT - y1);
     	drawWhiteLine(x1-20,HEIGHT -y1,x1-20,HEIGHT - (y1-20));
     	drawWhiteLine(x1-20,HEIGHT - y1,x1,HEIGHT - y1);
@@ -660,13 +660,13 @@ void DrawToScreen(){
     //gambar sayap
     	drawWhiteLine(x1-15, HEIGHT - (y1-60), x1-12, HEIGHT - (y1-45));
     	drawWhiteLine(x1-5, HEIGHT - (y1-65), x1-12, HEIGHT - (y1-45));
-    	drawWhiteLine(x1-5, HEIGHT - (y1-65), x1-15,HEIGHT - (y1-60));    
+    	drawWhiteLine(x1-5, HEIGHT - (y1-65), x1-15,HEIGHT - (y1-60));
 
     //mewarnai pesawat
-    	floodFill(x1-1,HEIGHT-(y1-1),255,255,255,255,0,127);
-    	floodFill(x1-21, HEIGHT - (y1-1), 255, 255, 255, 208, 163, 237);
+    	//floodFill(x1-1,HEIGHT-(y1-1),255,255,255,255,0,127);
+    	//floodFill(x1-21, HEIGHT - (y1-1), 255, 255, 255, 208, 163, 237);
 
-    	floodFill(x1-1, HEIGHT-(y1-81), 255, 255, 255, 208, 163, 237);
+    	//floodFill(x1-1, HEIGHT-(y1-81), 255, 255, 255, 208, 163, 237);
 
     }
 
@@ -678,7 +678,7 @@ void DrawToScreen(){
     	int y2 = 0;
 
     	int x3 = 0;
-    	int y3 = r-20;    
+    	int y3 = r-20;
 
     	int x22 = round(x2 * cos(sudut) - y2 * sin(sudut));
     	int y22 = round(x2 * sin(sudut) + y2 * cos(sudut));
@@ -709,7 +709,7 @@ void DrawToScreen(){
     	drawWhiteLine(x, y+rPara, x+rPara, y);
     //Kepala
     	drawCircle(x + rPara - rKepala, y, rKepala);
-    	floodFill(x + rPara - rKepala, y, 255, 255, 255, 255, 255, 255);
+    	//floodFill(x + rPara - rKepala, y, 255, 255, 255, 255, 255, 255);
     //Badan
     	drawWhiteLine(x + rPara, y, x + rPara + lBadan, y);
     //Tangan kanan
@@ -788,7 +788,7 @@ void DrawToScreen(){
 }
 
 int main() {
-	clearMatrix();    
+	clearMatrix();
 
 	int fbfd = 0;
 	long int screensize = 0;
@@ -835,7 +835,7 @@ int main() {
 	clearMatrix();
     //drawFrame();
 
-    //drawSemiCircle(100,100,70);    
+    //drawSemiCircle(100,100,70);
 	drawShooter(xp,yp,lastCorrectState);
 
 
@@ -852,10 +852,10 @@ int main() {
 			drawplaneright(xawal,yawal);
 			yawal -= 10;
 		} else {
-			yawal += 10;     
+			yawal += 10;
 			drawplaneleft(xawal,HEIGHT - yawal);
-		}   
-		drawBullets(); 
+		}
+		drawBullets();
 		//Clip
 		clip(xClipper, yClipper, pClipper, lClipper);
 		DrawToScreen();
@@ -873,7 +873,7 @@ int main() {
     //     //drawSemiCircle(100,100,70);
     //     drawwheel(200,1000,30,sudut);
     //     sudut+=M_PI/100;
-    //     drawFrame();    
+    //     drawFrame();
     //     drawShooter(xp,yp,lastCorrectState);
     //     drawplaneright(xawal,yawal);
     //     drawplaneleft(xawal,yawal);
@@ -900,13 +900,13 @@ int main() {
     //     if (left) {
     //         yawal -= 10;
     //     } else {
-    //         yawal += 10;     
+    //         yawal += 10;
     //     }
 
     //     // draw bullet
-    //     drawBullets(); 
+    //     drawBullets();
 
-    //     DrawToScreen(); 
+    //     DrawToScreen();
     //     usleep(50000);
     // } while (KeyPressed!='C' && !exploded);
     // thread1.detach();
@@ -938,12 +938,12 @@ int main() {
 	while (xPar < 510) {
 		clearMatrix();
 		drawFrame();
-		drawShooter(xp,yp,lastCorrectState);        
+		drawShooter(xp,yp,lastCorrectState);
 
         //Parasut turun
 		xPar = moveParachute(xawal + 100, yawal, counter);
 
-        //Wheel        
+        //Wheel
 		moveBounce(&yw1, &xw1, &vyw1, &vxw1, 600);
 		moveBounce(&yw2, &xw2, &vyw2, &vxw2, 600);
 		drawwheel(round(xw1), round(yw1), 30, angle1*M_PI/10);
