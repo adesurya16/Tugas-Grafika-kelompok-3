@@ -15,16 +15,23 @@
 
 using namespace std;
 
-#define HEIGHT 650
+#define HEIGHT 650 //HEIGHT jangan panjang panjang kan ada 2 layar satu untuk mini satu zoom in/out
 #define WIDTH 650
 
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
 
+//matriks mini map
 int redPixelMatrix[WIDTH][HEIGHT];
 int greenPixelMatrix[WIDTH][HEIGHT];
 int bluePixelMatrix[WIDTH][HEIGHT];
+
+//matriks zoom map
+int redPixelMatrixZoomMap[WIDTH][HEIGHT];
+int greenPixelMatrixZoomMap[WIDTH][HEIGHT];
+int bluePixelMatrixZoomMap[WIDTH][HEIGHT];
+
 int posX;
 int posY;
 int lastCorrectState = 's';
@@ -57,6 +64,22 @@ void clearMatrix() {
 			bluePixelMatrix[i][j] = 0;
 		}
 	}
+
+	for (int i = 0; i < WIDTH; ++i)
+	{
+		for (int j = 0; j < HEIGHT; ++j)
+		{
+			redPixelMatrixZoomMap[i][j] = 0;
+			greenPixelMatrixZoomMap[i][j] = 0;
+			bluePixelMatrixZoomMap[i][j] = 0;
+		}
+	}
+}
+
+void drawWhitePoint2(int x1, int y1) {
+	redPixelMatrixZoomMap[x1][y1] = 255;
+	greenPixelMatrixZoomMap[x1][y1] = 255;
+	bluePixelMatrixZoomMap[x1][y1] = 255;
 }
 
 void drawWhitePoint(int x1, int y1) {
@@ -181,12 +204,71 @@ bool drawWhiteLine(int x1, int y1, int x2, int y2) {
 	return ret;
 }
 
+bool drawWhiteLine2(int x1, int y1, int x2, int y2) {
+	//Than kode lu gua benerin dikit di sini, harusnya ngk usah pake absolut
+	bool ret = false;
+
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+	int ix = deltaX > 0 ? 1 : -1;
+	int iy = deltaY > 0 ? 1 : -1;
+	deltaX = abs(deltaX);
+	deltaY = abs(deltaY);
+
+	int x = x1;
+	int y = y1;
+
+	drawWhitePoint2(x,y);
+
+	if (deltaX >= deltaY) {
+		int error = 2 * deltaY - deltaX;
+
+		while (x != x2) {
+			if ((error >= 0) && (error || (ix > 0)))
+			{
+				error -= deltaX;
+				y += iy;
+			}
+
+			error += deltaY;
+			x += ix;
+
+
+			if (redPixelMatrixZoomMap[x][y] == 255 && greenPixelMatrixZoomMap[x][y] == 255 && bluePixelMatrixZoomMap[x][y] == 255) {
+				ret = true;
+			}
+			drawWhitePoint2(x, y);
+		}
+	} else {
+		int error = 2 * deltaX - deltaY;
+
+		while (y != y2)
+		{
+			if ((error >= 0) && (error || (iy > 0)))
+			{
+				error -= deltaY;
+				x += ix;
+			}
+
+			error += deltaX;
+			y += iy;
+
+
+			if (redPixelMatrixZoomMap[x][y] == 255 && greenPixelMatrixZoomMap[x][y] == 255 && bluePixelMatrixZoomMap[x][y] == 255) {
+				ret = true;
+			}
+			drawWhitePoint2(x, y);
+		}
+	}
+	return ret;
+}
+
 //CLipper Constants
 bool isClipping = false;
 int xClipper = 100;
-int yClipper = 600;
-int pClipper = 70;
-int lClipper = 300;
+int yClipper = 100;
+int pClipper = 100;
+int lClipper = 100;
 
 void clip(int xClipper, int yClipper, int pClipper, int lClipper) {
 	if (isClipping) {
@@ -406,28 +488,77 @@ void drawShooter(int xp, int yp, char mode) {
 }
 
 void DrawToScreen(){
-    /* prosedure yang menggambar ke layar dari matriks RGB (harusnya rata tengah)*/
+    /* prosedur yang menggambar ke layar dari matriks RGB (harusnya rata tengah)*/
 	long int location = 0;
 	int x , y;
 	for (y = vinfo.yres/2 - WIDTH/2; y < WIDTH + vinfo.yres/2 - WIDTH/2; y++)
 		for (x = vinfo.xres/2 - HEIGHT/2; x < HEIGHT + vinfo.xres/2 - HEIGHT/2; x++) {
 			location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) + (y+vinfo.yoffset) * finfo.line_length;
 			if (vinfo.bits_per_pixel == 32) {
-                //4byte
-                    *(fbp + location) = bluePixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];        // Some blue
-                    *(fbp + location + 1) = greenPixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];     // A little green
-                    *(fbp + location + 2) = redPixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];    // A lot of red
-                    *(fbp + location + 3) = 0;      // No transparency
-            //location += 4;
-            } else  { //assume 16bpp
-            	int b = 0;
-                int g = 100;     // A little green
-                int r = 0;    // A lot of red
-                unsigned short int t = r<<11 | g << 5 | b;
-                *((unsigned short int*)(fbp + location)) = t;
-            }
-        }
+        //4byte
+        *(fbp + location) = bluePixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];        // Some blue
+        *(fbp + location + 1) = greenPixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];     // A little green
+        *(fbp + location + 2) = redPixelMatrix[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT/2];    // A lot of red
+        *(fbp + location + 3) = 0;      // No transparency
+        //location += 4;
+      } else  { //assume 16bpp
+        	int b = 0;
+          int g = 100;     // A little green
+          int r = 0;    // A lot of red
+          unsigned short int t = r<<11 | g << 5 | b;
+          *((unsigned short int*)(fbp + location)) = t;
+      }
     }
+}
+
+int redTempMatriks[WIDTH][HEIGHT*2];
+int greenTempMatriks[WIDTH][HEIGHT*2];
+int blueTempMatriks[WIDTH][HEIGHT*2];
+
+void DrawMapAndMiniMapToScreen(){
+		/* menggambar mini map dan map yang bisa zoom in/out */
+		/* mini map dikiri dan satunya dikanan */
+		/* harusnya rata tengah */
+	  // buat temporer matriks
+
+		long int location = 0;
+		int x , y;
+		int HEIGHT2 = HEIGHT*2;
+		for(int i=0;i<WIDTH;i++){
+			for(int j=0;j<HEIGHT2;j++){
+					if(j<HEIGHT){
+						redTempMatriks[i][j] = redPixelMatrix[i][j];
+						greenTempMatriks[i][j] = greenPixelMatrix[i][j];
+						blueTempMatriks[i][j] = bluePixelMatrix[i][j];
+					}else{
+
+						redTempMatriks[i][j] = redPixelMatrixZoomMap[i][j - HEIGHT];
+						greenTempMatriks[i][j] = greenPixelMatrixZoomMap[i][j - HEIGHT];
+						blueTempMatriks[i][j] = bluePixelMatrixZoomMap[i][j - HEIGHT];
+					}
+			}
+		}
+
+		for (y = vinfo.yres/2 - WIDTH/2; y < WIDTH + vinfo.yres/2 - WIDTH/2; y++)
+			for (x = vinfo.xres/2 - HEIGHT2/2; x < HEIGHT2 + vinfo.xres/2 - HEIGHT2/2; x++) {
+				location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) + (y+vinfo.yoffset) * finfo.line_length;
+				if (vinfo.bits_per_pixel == 32) {
+	        //4byte
+	        *(fbp + location) = blueTempMatriks[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT2/2];        // Some blue
+	        *(fbp + location + 1) = greenTempMatriks[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT2/2];     // A little green
+	        *(fbp + location + 2) = redTempMatriks[y - vinfo.yres/2 + WIDTH/2][x - vinfo.xres/2 + HEIGHT2/2];    // A lot of red
+	        *(fbp + location + 3) = 0;      // No transparency
+	        //location += 4;
+	      } else  { //assume 16bpp
+	        	int b = 0;
+	          int g = 100;     // A little green
+	          int r = 0;    // A lot of red
+	          unsigned short int t = r<<11 | g << 5 | b;
+	          *((unsigned short int*)(fbp + location)) = t;
+	      }
+	    }
+
+}
 
     void drawExplosion(int x,int y){
     //x = 70
@@ -496,6 +627,16 @@ void DrawToScreen(){
     }
 
     void drawStars() {
+			drawExplosion(100,100);
+			drawExplosion(100,200);
+			drawExplosion(100,300);
+			drawExplosion(100,400);
+			drawExplosion(100,500);
+			drawExplosion(200,100);
+			drawExplosion(200,200);
+			drawExplosion(200,300);
+			drawExplosion(200,400);
+			drawExplosion(200,500);
     	drawExplosion(400, 100);
     	drawExplosion(300, 200);
     	drawExplosion(500, 200);
@@ -503,8 +644,6 @@ void DrawToScreen(){
     	drawExplosion(300, 400);
     	drawExplosion(500, 400);
     	drawExplosion(400, 500);
-    	drawExplosion(400, 700);
-
     }
 
     void drawFrame() {
@@ -512,6 +651,11 @@ void DrawToScreen(){
     	drawWhiteLine(1, HEIGHT-1, WIDTH-1, HEIGHT-1);
     	drawWhiteLine(WIDTH-1, HEIGHT-1,WIDTH-1, 1);
     	drawWhiteLine(WIDTH-1, 1, 1, 1);
+
+			drawWhiteLine2(1, 1, 1, HEIGHT-1);
+    	drawWhiteLine2(1, HEIGHT-1, WIDTH-1, HEIGHT-1);
+    	drawWhiteLine2(WIDTH-1, HEIGHT-1,WIDTH-1, 1);
+    	drawWhiteLine2(WIDTH-1, 1, 1, 1);
     }
 
     void addBullet(int x1, int y1, int x2, int y2 , int n)
@@ -848,7 +992,7 @@ int main() {
 
     // mendapat screensize layar monitor
 	screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
-
+	printf("%d x %d\n",vinfo.xres,vinfo.yres);
     // Map the device to memory
 	fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, (off_t)0);
 
@@ -858,16 +1002,16 @@ int main() {
 
 
 	thread thread1(&drawKeyClipping);
-	clip(xClipper, yClipper, pClipper, lClipper);
 	char KeyPressed;
 	isClipping = true;
 	clearMatrix();
+	clip(xClipper, yClipper, pClipper, lClipper);
 	do{
 		clearMatrix();
 		clip(xClipper, yClipper, pClipper, lClipper);
 		drawFrame();
-		//drawStars();
-		DrawToScreen();
+		drawStars();
+	  DrawMapAndMiniMapToScreen();
 		usleep(40000);
 	} while (KeyPressed!='C' && !exploded);
 	thread1.detach();
