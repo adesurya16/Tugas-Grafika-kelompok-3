@@ -416,8 +416,131 @@ void makeWorld() {
 	idxObject++;
 	free(listPoint);
     //////////////////////////////////////////////////////////////////////////////////////////
-
-
+	pointSize = 14;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xTekSipil[14], yTekSipil[14];
+	xTekSipil[0] = 62; yTekSipil[0] = 272;
+	xTekSipil[1] = 86; yTekSipil[1] = 272;
+	xTekSipil[2] = 86; yTekSipil[2] = 281;
+	xTekSipil[3] = 74; yTekSipil[3] = 281;
+	xTekSipil[4] = 74; yTekSipil[4] = 285;
+	xTekSipil[5] = 111; yTekSipil[5] = 285;
+	xTekSipil[6] = 111; yTekSipil[6] = 280;
+	xTekSipil[7] = 125; yTekSipil[7] = 280;
+	xTekSipil[8] = 125; yTekSipil[8] = 308;
+	xTekSipil[9] = 70; yTekSipil[9] = 308;
+	xTekSipil[10] = 70; yTekSipil[10] = 299;
+	xTekSipil[11] = 98; yTekSipil[11] = 299;
+	xTekSipil[12] = 98; yTekSipil[12] = 294;
+	xTekSipil[13] = 62; yTekSipil[13] = 294;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xTekSipil[i];
+        listPoint[i].y = yTekSipil[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+	//////////////////////////////////////////////////////////////////////////////////////////
+	pointSize = 8;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xHimafi[8], yHimafi[8];
+	xHimafi[0] = 60; yHimafi[0] 233;
+	xHimafi[1] = 125; yHimafi[1] 233;
+	xHimafi[2] = 125; yHimafi[2] 277;
+	xHimafi[3] = 89; yHimafi[3] 277;
+	xHimafi[4] = 89; yHimafi[4] 269;
+	xHimafi[5] = 118; yHimafi[5] 269;
+	xHimafi[6] = 118; yHimafi[6] 266;
+	xHimafi[7] = 60; yHimafi[7] 266;
+	
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xHimafi[i];
+        listPoint[i].y = yHimafi[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+    //////////////////////////////////////////////////////////////////////////////////////////
+	pointSize = 4;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xA[4], yA[4];
+	xA[0] = 30; yA[0] = 111;
+	xA[1] = 78; yA[1] = 111;
+	xA[2] = 78; yA[2] = 138;
+	xA[3] = 30; yA[3] = 138;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xA[i];
+        listPoint[i].y = yA[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+	//////////////////////////////////////////////////////////////////////////////////////////
+	pointSize = 4;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xB[4], yB[4];
+	xB[0] = 30; yB[0] = 140;
+	xB[1] = 55; yB[1] = 140;
+	xB[2] = 55; yB[2] = 153;
+	xB[3] = 30; yB[3] = 153;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xB[i];
+        listPoint[i].y = yB[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+	//////////////////////////////////////////////////////////////////////////////////////////
+	pointSize = 12;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xC[12], yC[12];
+	xC[0] = 30; yC[0] = 155;
+	xC[1] = 55; yC[1] = 155;
+	xC[2] = 55; yC[2] = 158;
+	xC[3] = 65; yC[3] = 158;
+	xC[4] = 65; yC[4] = 153;
+	xC[5] = 75; yC[5] = 153;
+	xC[6] = 75; yC[6] = 169;
+	xC[7] = 65; yC[7] = 169;
+	xC[8] = 65; yC[8] = 166;
+	xC[9] = 55; yC[9] = 166;
+	xC[10] = 55; yC[10] = 169;
+	xC[11] = 30; yC[11] = 169;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xC[i];
+        listPoint[i].y = yC[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
+	//////////////////////////////////////////////////////////////////////////////////////////
+	pointSize = 12;
+    listPoint = (Point*)malloc(pointSize*sizeof(Point));
+    int xD[11], yD[11];
+	xD[0] = 46; yD[0] = 94;
+	xD[1] = 71; yD[1] = 94;
+	xD[2] = 71; yD[2] = 99;
+	xD[3] = 73; yD[3] = 99;
+	xD[4] = 73; yD[4] = 103;
+	xD[5] = 71; yD[5] = 103;
+	xD[6] = 71; yD[6] = 108;
+	xD[7] = 47; yD[7] = 108;
+	xD[8] = 46; yD[8] = 99;
+	xD[9] = 33; yD[9] = 99;
+	xD[10] = 33; yD[10] = 97;
+	for(int i = 0; i < pointSize; i++) {
+        listPoint[i].x = xD[i];
+        listPoint[i].y = yD[i];
+	}
+	listObject[idxObject] = Object();
+	listObject[idxObject].buildPolygon(listPoint, pointSize);
+	idxObject++;
+	free(listPoint);
 }
 
 void drawAllObject() {
